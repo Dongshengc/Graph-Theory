@@ -169,6 +169,7 @@ vector<int> minCliqueCover(vector<vector<int>> graph)
     vector<int> clique_index;
     for (size_t K = n; K != 0; K -= 1)
     {
+    	std::cout << "K = " << K << std::endl;
     clique_index = std::vector<int> ();
     k = n - K;
     //Find Cliques

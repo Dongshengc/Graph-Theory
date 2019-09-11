@@ -16,7 +16,7 @@ int max_removable(vector<vector<int> > &neighbors, vector<int> &cover);
 vector<int> procedure_1(vector<vector<int>> &neighbors, vector<int> &cover);
 vector<int> procedure_2(vector<vector<int>> &neighbors, vector<int> &cover, int k);
 int cover_size(vector<int> &cover);
-vector<int> minCliqueCover(vector<vector<int>> &graph);
+vector<int> minCliqueCover(vector<vector<int>> &graph, int n);
 vector<doublepair> minCliqueCover(vector<doublepair> &);
 bool emptyGraph(vector<vector<int>> &graph);
 void removeNode(vector<vector<int>> &graph, vector<int> &nodes);
@@ -103,6 +103,7 @@ vector<doublepair> minCliqueCover(vector<doublepair> &ranges)
 		*gbeg++ = row;
 	}
 
+	vector<int> index;
 	while (!emptyGraph(graph))
 	{
 		for (int i = 0; i < ranges.size(); ++i)
@@ -116,7 +117,7 @@ vector<doublepair> minCliqueCover(vector<doublepair> &ranges)
 
 		cout << "graph built" << endl;
 
-		auto index = minCliqueCover(graph);
+		index = minCliqueCover(graph, graph.size() - index.size());
 		all_index.insert(all_index.end(), index.begin(), index.end());
 		indices.push_back(index);
 		for (int i = 0; i < index.size(); ++i)
@@ -147,7 +148,7 @@ vector<doublepair> minCliqueCover(vector<doublepair> &ranges)
 }
 
 
-vector<int> minCliqueCover(vector<vector<int>> &graph)
+vector<int> minCliqueCover(vector<vector<int>> &graph, int _n)
 {
 	int n = graph.size(), K, i, j, k, p, q, r, s, min, edge;
 
@@ -162,7 +163,7 @@ vector<int> minCliqueCover(vector<vector<int>> &graph)
 	}
 
 	vector<int> clique_index;
-	for (size_t K = n; K != 1; K--)
+	for (size_t K = _n; K != 1; K--)
 	{
 		std::cout << "K: " << K << std::endl;
 		int counter = 0;
@@ -208,6 +209,7 @@ vector<int> minCliqueCover(vector<vector<int>> &graph)
 				min = s;
 			if (n-s == K)
 			{
+				clique_index.resize(K);
 				auto cibeg = clique_index.begin();
 				for (j = 0; j < cover.size(); j++)
 					if (cover[j] == 0)
@@ -243,9 +245,11 @@ vector<int> minCliqueCover(vector<vector<int>> &graph)
 				{
 					if (n-s ==K)
 					{
+						clique_index.resize(K);
+						auto cibeg = clique_index.begin();
 						for (j = 0; j < cover.size(); j++)
 							if (cover[j] == 0)
-								clique_index.push_back(j);
+								*cibeg++ = j;
 					}
 					found = true;
 					break;
@@ -257,6 +261,7 @@ vector<int> minCliqueCover(vector<vector<int>> &graph)
 					min = s;
 				if (n - s == K)
 				{
+					clique_index.resize(K);
 					auto cibeg = clique_index.begin();
 					for (j = 0; j < cover.size(); j++)
 						if (cover[j] == 0)
@@ -281,11 +286,11 @@ int main()
 {
 
 	vector<pair<double, double>> ranges{
+//		{6.0, 15.0}, {4.5, 4.5}, {6.0, 15.0}, {4.5, 4.5}, {6.0, 15.0}, {4.5, 4.5}, {6.0, 15.0}, {4.5, 4.5},
+//		{6.0, 15.0}, {4.5, 4.5}, {6.0, 15.0}, {4.5, 4.5}, {6.0, 15.0}, {4.5, 4.5}, {6.0, 15.0}, {4.5, 4.5},
+//		{6.0, 15.0}, {4.5, 4.5}, {6.0, 15.0}, {4.5, 4.5}, {6.0, 15.0}, {4.5, 4.5}, {6.0, 15.0}, {4.5, 4.5},
 		{6.0, 15.0}, {4.5, 4.5}, {6.0, 15.0}, {4.5, 4.5}, {6.0, 15.0}, {4.5, 4.5}, {6.0, 15.0}, {4.5, 4.5},
-		{6.0, 15.0}, {4.5, 4.5}, {6.0, 15.0}, {4.5, 4.5}, {6.0, 15.0}, {4.5, 4.5}, {6.0, 15.0}, {4.5, 4.5},
-		{6.0, 15.0}, {4.5, 4.5}, {6.0, 15.0}, {4.5, 4.5}, {6.0, 15.0}, {4.5, 4.5}, {6.0, 15.0}, {4.5, 4.5},
-		{6.0, 15.0}, {4.5, 4.5}, {6.0, 15.0}, {4.5, 4.5}, {6.0, 15.0}, {4.5, 4.5}, {6.0, 15.0}, {4.5, 4.5},
-		//		{4.5, 4.5}, {6.0, 9.0}, {6.0, 8.0}, {12.0, 15.0}
+		{4.5, 4.5} , {6.0, 9.0}, {6.0, 8.0}, {12.0, 15.0}
 	};
 	
 	vector<doublepair> output_ranges = minCliqueCover(ranges);
